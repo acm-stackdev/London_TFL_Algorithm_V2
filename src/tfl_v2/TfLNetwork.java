@@ -4,10 +4,11 @@ import java.util.*;
 
 /**
  * The master class for TfL Network - Version 2.
+ * Upgraded to use HashMap for O(1) lookups and PriorityQueue for O(log V) pathfinding.
  */
 public class TfLNetwork {
 
-    // V2: HashMap gives O(1) average lookup by station name
+    // V2: Map allows instant lookup by station name (String)
     private Map<String, Station> stationMap;
 
     public TfLNetwork() {
@@ -15,7 +16,6 @@ public class TfLNetwork {
     }
 
     // SETUP METHODS (Used for loading CSV data)
-
 
     public void addStation(String name) {
         // HashMap handles dynamic array no need to resize
@@ -236,42 +236,45 @@ public class TfLNetwork {
     }
 
     // CUSTOMER METHOD: View Stations on a Line
-    // V2: TreeMap gives naturally sorted keys O(log n) insert
+    // V2: Arrays.sort() — Dual-Pivot Quicksort O(n log n)
+    // V1: Hand-coded Bubble Sort O(n^2)
 
     public void displayStationsOnLine(String lineName) {
         System.out.println("\n--- Stations on the " + lineName + " Line (Sorted A-Z) ---");
 
-        long sortStart = System.nanoTime();
-
-        // V2: TreeMap keeps keys sorted automatically — O(log n) per insert
-        // V1: Collected into array then Bubble Sorted — O(n^2)
-        TreeMap<String, Station> sorted = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
+        // Step 1: Collect all stations on this line
+        List<String> stationNames = new ArrayList<>();
         for (Station s : stationMap.values()) {
             for (Connection c : s.getConnections()) {
                 if (c.getLineName().equalsIgnoreCase(lineName)) {
-                    sorted.put(s.getName(), s);
+                    stationNames.add(s.getName());
                     break;
                 }
             }
         }
 
-        long sortEnd = System.nanoTime();
-        double sortTimeMs = (sortEnd - sortStart) / 1_000_000.0;
-
-        if (sorted.isEmpty()) {
+        if (stationNames.isEmpty()) {
             System.out.println("No stations found for line: " + lineName);
             return;
         }
 
-        int count = 1;
-        for (String name : sorted.keySet()) {
-            System.out.println(count + "  " + name);
-            count++;
+        // Step 2: Convert to String[] for Arrays.sort()
+        String[] namesArray = stationNames.toArray(new String[0]);
+
+        // Step 3: Arrays.sort() — Dual-Pivot Quicksort O(n log n)
+        // V1 used hand-coded Bubble Sort O(n^2)
+        long sortStart = System.nanoTime();
+        Arrays.sort(namesArray, String.CASE_INSENSITIVE_ORDER);
+        long sortEnd = System.nanoTime();
+        double sortTimeMs = (sortEnd - sortStart) / 1_000_000.0;
+
+        // Step 4: Display sorted results
+        for (int i = 0; i < namesArray.length; i++) {
+            System.out.println((i + 1) + "  " + namesArray[i]);
         }
 
         System.out.println("-------------------------------------");
-        System.out.println("V2 TreeMap Sort Time: " + String.format("%.5f", sortTimeMs) + " ms  | O(n log n)");
+        System.out.println("V2 Sort Time (Arrays.sort - Quicksort): " + String.format("%.5f", sortTimeMs) + " ms  | O(n log n)");
         System.out.println("V1 comparison: Bubble Sort was O(n^2)");
         System.out.println("-------------------------------------");
     }
@@ -307,7 +310,6 @@ public class TfLNetwork {
         long treeNs = treeEnd - treeStart;
 
         // Step 3: HashMap search — O(1)
-        // Build a HashMap of the same stations for direct comparison
         Map<String, Station> lineMap = new HashMap<>(lineStations);
         long hashStart = System.nanoTime();
         boolean hashFound = lineMap.containsKey(stationName.toUpperCase())
@@ -331,18 +333,11 @@ public class TfLNetwork {
         System.out.printf("  %-28s %-15s %-15s%n", "Keeps sorted order?", "Yes", "No");
         System.out.printf("  %-28s %-15d %-15d%n", "Time taken (ns):", treeNs, hashNs);
         System.out.println("  -------------------------------------------------------");
-        System.out.println("  V1 comparison: Hand-coded Binary Search O(log n) after Bubble Sort O(n^2)");
         System.out.println("  V2 TreeMap: O(log n) insert keeps data sorted — no separate sort step needed");
         System.out.println("  V2 HashMap: O(1) lookup — fastest possible search");
 
         if (found) {
-            Station foundStation = lineStations.get(stationName) != null
-                    ? lineStations.get(stationName)
-                    : lineStations.floorEntry(stationName) != null
-                      ? lineStations.floorEntry(stationName).getValue()
-                      : null;
-
-            // Try case-insensitive get
+            Station foundStation = null;
             for (Map.Entry<String, Station> e : lineStations.entrySet()) {
                 if (e.getKey().equalsIgnoreCase(stationName)) {
                     foundStation = e.getValue();
@@ -373,8 +368,8 @@ public class TfLNetwork {
     }
 
     // CUSTOMER METHOD: Find Fastest Route
-    // V2: Dijkstra with PriorityQueue — O((E + V) log N)
-    // V1: Dijkstra with array scan    — O(N^2)
+    // V2: Dijkstra with PriorityQueue — O((E + V) log V)
+    // V1: Dijkstra with array scan    — O(V^2)
 
     public void findFastestRoute(String startName, String targetName) {
         if (startName.equalsIgnoreCase(targetName)) {

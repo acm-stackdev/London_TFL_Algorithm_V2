@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  * Main entry point for TfL Network Manager - Version 2.
- * The internal data structures and algorithms different.
+ * The internal data structures and algorithms will be different.
  */
 
 public class TfLMain {
