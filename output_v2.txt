@@ -1,0 +1,327 @@
+==================================
+   Starting TfL Network Manager
+         VERSION 2 (Java API)
+==================================
+Loading Database...
+ - 172 Connections loaded successfully.
+ - 66 Interchanges loaded successfully.
+----------------------------------
+Database Boot Time: 13.41 ms
+----------------------------------
+
+==================================
+     TfL NETWORK MANAGER V2
+==================================
+Select User Mode:
+1. Customer Access
+2. Engineer Access
+0. Exit System
+Enter choice: 2
+
+--- ENGINEER MENU ---
+1. Add Delay to Track
+2. Remove Delay from Track
+3. Manage Track (Open/Close)
+4. View Delay Status
+5. View Connection Status (Closures)
+0. Return to Main Menu
+Enter choice: 1
+Enter Start Station: Warren Street
+Enter Target Station: Oxford Circus
+Enter Delay (minutes): 5
+Success: Added 5.0 min delay from WARREN STREET to OXFORD CIRCUS.
+
+2. Testing output : Checking Delay Status Report
+
+--- ENGINEER MENU ---
+1. Add Delay to Track
+2. Remove Delay from Track
+3. Manage Track (Open/Close)
+4. View Delay Status
+5. View Connection Status (Closures)
+0. Return to Main Menu
+Enter choice: 4
+
+--- DELAY STATUS REPORT ---
+Victoria (Southbound): WARREN STREET to OXFORD CIRCUS - 5.0 min delay
+---------------------------
+
+3. Testing output : Removing Delay form Track
+
+--- ENGINEER MENU ---
+1. Add Delay to Track
+2. Remove Delay from Track
+3. Manage Track (Open/Close)
+4. View Delay Status
+5. View Connection Status (Closures)
+0. Return to Main Menu
+Enter choice: 2
+Enter Start Station: Warren Street
+Enter Target Station: Oxford Circus
+Success: Delay removed from WARREN STREET to OXFORD CIRCUS.
+
+4. Testing output : Close a Track
+
+--- ENGINEER MENU ---
+1. Add Delay to Track
+2. Remove Delay from Track
+3. Manage Track (Open/Close)
+4. View Delay Status
+5. View Connection Status (Closures)
+0. Return to Main Menu
+Enter choice: 3
+Enter Start Station: Bond Street
+Enter Target Station: Baker Street
+Current Status: OPEN
+Select Action:
+1. Set to OPEN
+2. Set to CLOSED
+Enter choice (1 or 2): 2
+Success: Track from Bond Street to Baker Street is now CLOSED.
+
+5. Testing output : View which Track is close
+
+--- ENGINEER MENU ---
+1. Add Delay to Track
+2. Remove Delay from Track
+3. Manage Track (Open/Close)
+4. View Delay Status
+5. View Connection Status (Closures)
+0. Return to Main Menu
+Enter choice: 5
+
+--- CLOSURE STATUS REPORT ---
+Jubilee (Westbound): BOND STREET to BAKER STREET - CLOSED
+-----------------------------
+
+6. Testing output : Reopen the track connection
+
+--- ENGINEER MENU ---
+1. Add Delay to Track
+2. Remove Delay from Track
+3. Manage Track (Open/Close)
+4. View Delay Status
+5. View Connection Status (Closures)
+0. Return to Main Menu
+Enter choice: 3
+Enter Start Station: Bond Street
+Enter Target Station: Baker Street
+Current Status: CLOSED
+Select Action:
+1. Set to OPEN
+2. Set to CLOSED
+Enter choice (1 or 2): 1
+Success: Track from Bond Street to Baker Street is now OPEN.
+
+7. Testing output : Planning a Journey ( for normal routes)
+
+==================================
+     TfL NETWORK MANAGER V2
+==================================
+Select User Mode:
+1. Customer Access
+2. Engineer Access
+0. Exit System
+Enter choice: 1
+
+--- CUSTOMER MENU ---
+1. Plan a Journey (Fastest Route)
+2. Search by Station (Live Board)
+3. View Stations on a Line
+4. Search for a Station on a Line
+0. Return to Main Menu
+Enter choice: 1
+
+--- TfL Journey Planner ---
+From (Start Station): MARBLE ARCH
+To (Destination Station): GREAT PORTLAND STREET
+
+=======================================================
+  Route: MARBLE ARCH to GREAT PORTLAND STREET
+=======================================================
+(1) Start: MARBLE ARCH, Central (Eastbound)
+(2) Central (Eastbound): MARBLE ARCH to BOND STREET  1.00min
+(3) Change: BOND STREET  Central (Eastbound) to Jubilee (Westbound)  2.00min
+(4) Jubilee (Westbound): BOND STREET to BAKER STREET  2.28min
+(5) Change: BAKER STREET  Jubilee (Westbound) to Circle (Outer)  2.00min
+(6) Circle (Outer): BAKER STREET to GREAT PORTLAND STREET  1.90min
+(7) End: GREAT PORTLAND STREET, Circle (Outer)
+-------------------------------------------------------
+Total Journey Time: 9.18 minutes
+-------------------------------------------------------
+V2 Algorithm Execution Time: 2.9172 ms
+V2 Complexity: O((E + V) log V) with PriorityQueue
+V1 Complexity: O(V^2) with array scan
+=======================================================
+
+8. Testing output : Planning a Journey (for normal routes close connection)
+
+--- CUSTOMER MENU ---
+1. Plan a Journey (Fastest Route)
+2. Search by Station (Live Board)
+3. View Stations on a Line
+4. Search for a Station on a Line
+0. Return to Main Menu
+Enter choice: 1
+
+--- TfL Journey Planner ---
+From (Start Station): MARBLE ARCH
+To (Destination Station): GREAT PORTLAND STREET
+
+=======================================================
+  Route: MARBLE ARCH to GREAT PORTLAND STREET
+=======================================================
+(1) Start: MARBLE ARCH, Central (Eastbound)
+(2) Central (Eastbound): MARBLE ARCH to BOND STREET  1.00min
+(3) Central (Eastbound): BOND STREET to OXFORD CIRCUS  1.10min
+(4) Change: OXFORD CIRCUS  Central (Eastbound) to Bakerloo (Northbound)  2.00min
+(5) Bakerloo (Northbound): OXFORD CIRCUS to REGENTS PARK  1.72min
+(6) Bakerloo (Northbound): REGENTS PARK to BAKER STREET  1.65min
+(7) Change: BAKER STREET  Bakerloo (Northbound) to Circle (Outer)  2.00min
+(8) Circle (Outer): BAKER STREET to GREAT PORTLAND STREET  1.90min
+(9) End: GREAT PORTLAND STREET, Circle (Outer)
+-------------------------------------------------------
+Total Journey Time: 11.37 minutes
+-------------------------------------------------------
+V2 Algorithm Execution Time: 0.5396 ms
+V2 Complexity: O((E + V) log V) with PriorityQueue
+V1 Complexity: O(V^2) with array scan
+=======================================================
+
+9. Testing output : Searching by Station
+
+--- CUSTOMER MENU ---
+1. Plan a Journey (Fastest Route)
+2. Search by Station (Live Board)
+3. View Stations on a Line
+4. Search for a Station on a Line
+0. Return to Main Menu
+Enter choice: 2
+Enter Station Name: Bond Street
+
+=======================================================
+   LIVE DEPARTURES: BOND STREET
+=======================================================
+
+[ CENTRAL LINE ]
+  MARBLE ARCH                    1 min, 3 min, 8 min
+  OXFORD CIRCUS                  Due, 5 min, 8 min
+
+[ JUBILEE LINE ]
+  BAKER STREET                   CLOSED
+  GREEN PARK                     1 min, 3 min, 6 min
+
+=======================================================
+V2 Sort Time (Collections.sort): 0.77560 ms  | O(n log n)
+V1 comparison: Bubble Sort was O(n^2)
+=======================================================
+
+10. Testing output : Searching a Station by Line (Quick Sort)
+
+--- CUSTOMER MENU ---
+1. Plan a Journey (Fastest Route)
+2. Search by Station (Live Board)
+3. View Stations on a Line
+4. Search for a Station on a Line
+0. Return to Main Menu
+Enter choice: 3
+Enter Line Name (e.g., Victoria, Jubilee): Circle
+
+--- Stations on the Circle Line (Sorted A-Z) ---
+1  ALDGATE
+2  BAKER STREET
+3  BARBICAN
+4  BAYSWATER
+5  BLACKFRIARS
+6  CANNON STREET
+7  EDGWARE ROAD
+8  EMBANKMENT
+9  EUSTON SQUARE
+10  FARRINGDON
+11  GLOUCESTER ROAD
+12  GREAT PORTLAND STREET
+13  HIGH STREET KENSINGTON
+14  KINGS CROSS ST PANCRAS
+15  LIVERPOOL STREET
+16  MANSION HOUSE
+17  MONUMENT
+18  MOORGATE
+19  NOTTING HILL GATE
+20  PADDINGTON (CIRCLE)
+21  SLOANE SQUARE
+22  SOUTH KENSINGTON
+23  ST JAMES PARK
+24  TEMPLE
+25  TOWER HILL
+26  VICTORIA
+27  WESTMINSTER
+-------------------------------------
+V2 Sort Time (Arrays.sort - Quicksort): 0.13670 ms  | O(n log n)
+V1 comparison: Bubble Sort was O(n^2)
+-------------------------------------
+
+11. Testing output : Searching a Station on the Line
+
+--- CUSTOMER MENU ---
+1. Plan a Journey (Fastest Route)
+2. Search by Station (Live Board)
+3. View Stations on a Line
+4. Search for a Station on a Line
+0. Return to Main Menu
+Enter choice: 4
+Enter Line Name (e.g., Victoria, Jubilee): Circle
+Enter Station Name to search for: ALDGATE
+
+=======================================================
+  Search: "ALDGATE" on Circle Line
+  Total stations on this line: 27
+=======================================================
+  RESULT: FOUND
+-------------------------------------------------------
+                               TREEMAP         HASHMAP
+  -------------------------------------------------------
+  Complexity:                  O(log n)        O(1)
+  Backed by:                   Red-Black Tree  Hash Table
+  Keeps sorted order?          Yes             No
+  Time taken (ns):             6200            2400
+  -------------------------------------------------------
+  V2 TreeMap: O(log n) insert keeps data sorted — no separate sort step needed
+  V2 HashMap: O(1) lookup — fastest possible search
+
+  Departures from ALDGATE on Circle line:
+    -> LIVERPOOL STREET             (Inner)  1.75 min
+    -> TOWER HILL                   (Outer)  1.37 min
+=======================================================
+
+12. Testing output : Searching a Station on the Line
+
+-- CUSTOMER MENU ---
+1. Plan a Journey (Fastest Route)
+2. Search by Station (Live Board)
+3. View Stations on a Line
+4. Search for a Station on a Line
+0. Return to Main Menu
+Enter choice: 4
+Enter Line Name (e.g., Victoria, Jubilee): Piccadilly
+Enter Station Name to search for: SOUTH KENSINGTON
+
+=======================================================
+  Search: "SOUTH KENSINGTON" on Piccadilly Line
+  Total stations on this line: 12
+=======================================================
+  RESULT: FOUND
+-------------------------------------------------------
+                               TREEMAP         HASHMAP
+  -------------------------------------------------------
+  Complexity:                  O(log n)        O(1)
+  Backed by:                   Red-Black Tree  Hash Table
+  Keeps sorted order?          Yes             No
+  Time taken (ns):             1500            2600
+  -------------------------------------------------------
+  V2 TreeMap: O(log n) insert keeps data sorted — no separate sort step needed
+  V2 HashMap: O(1) lookup — fastest possible search
+
+  Departures from SOUTH KENSINGTON on Piccadilly line:
+    -> KNIGHTSBRIDGE                (Eastbound)  2.48 min
+    -> GLOUCESTER ROAD              (Westbound)  1.37 min
+=======================================================
