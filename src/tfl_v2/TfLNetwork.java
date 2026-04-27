@@ -177,7 +177,7 @@ public class TfLNetwork {
     }
 
     // CUSTOMER METHOD: Station Information
-    // V2: Collections.sort() O(n log n) vs V1 Bubble Sort O(n^2)
+    // V2: Array.sort() O(n log n) vs V1 Bubble Sort O(n^2)
 
     public void displayStationInformation(String stationName) {
         long startTime = System.nanoTime();
@@ -230,7 +230,7 @@ public class TfLNetwork {
         }
 
         System.out.println("\n=======================================================");
-        System.out.println("V2 Sort Time (Collections.sort): " + String.format("%.5f", timeMs) + " ms  | O(n log n)");
+        System.out.println("V2 Sort Time (Array.sort): " + String.format("%.5f", timeMs) + " ms  | O(n log n)");
         System.out.println("V1 comparison: Bubble Sort was O(n^2)");
         System.out.println("=======================================================");
     }
